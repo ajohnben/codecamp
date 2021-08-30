@@ -55,18 +55,65 @@ namespace CodeCampTest
             var emailField = driver.FindElementByCssSelector("#loginDialog input[type=password]");
             emailField.SendKeys("abc123");
 
-            GetLoginButton();
+            GetLoginButton().Click();
 
 
+        }
+
+        public List<IWebElement> GetLoginModalError()
+        {
+            FillInLoginModalFormThenSubmit();
+            var errorMessages = driver.FindElementByClassName("v-messages__message");
+
+            return (List<IWebElement>)errorMessages;
         }
 
         public IEnumerable<IWebElement> GetLoginDialogButtons() => driver.FindElementsByCssSelector("[aria-label=login]");
 
-        public void GetLoginButton()
+        public IWebElement GetLoginButton()
         {
-            foreach(var btn in GetLoginDialogButtons()){
-                Console.WriteLine(btn.GetAttribute("[aria-label=login]"));
+
+            IWebElement webElement = null;
+            foreach(IWebElement btn in GetLoginDialogButtons()){
+                webElement =  btn;
+                break;
             }
+
+            return webElement;
+     
         }
+
+        public void ClickPlanetMenu()
+        {
+            var planetsMenu = driver.FindElementByCssSelector("[aria-label=planets]");
+            planetsMenu.Click();
+        }
+
+ 
+
+        public string ClickJupiterExploreButtonThenGetString()
+        {
+
+            ClickPlanetMenu();
+
+            string popupMessage = null;
+
+            foreach (var planet in GetPlanets())
+            {
+                if(planet.Name == "Jupiter")
+                {
+                    planet.PlanetElement.FindElement(By.CssSelector("button")).Click();
+
+                    WebDriverWait Wait = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+                    Wait.Until(c => c.FindElement(By.ClassName("v-snack__wrapper")));
+                    popupMessage = planet.PlanetElement.FindElement(By.ClassName("popup-message")).Text;
+
+                }
+            }
+
+            return popupMessage;
+        }
+
+
     }
 }

@@ -20,6 +20,8 @@ namespace CodeCampTest
             return double.Parse(radiusString.Replace(" km", ""), System.Globalization.NumberStyles.AllowThousands);
         }
 
+        public IWebElement PlanetElement => planetElement;
+
 
     }
 }

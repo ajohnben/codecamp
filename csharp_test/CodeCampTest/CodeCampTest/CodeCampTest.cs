@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium.Chrome;
+using System;
 
 namespace CodeCampTest
 {
@@ -34,6 +35,26 @@ namespace CodeCampTest
             new PlanetsPage(driver).FillInLoginModalFormThenSubmit();
 
         }
+
+        [TestMethod]
+        public void LoginModalErrorMessageTest()
+        {
+            driver.Url = "https://d21vtxezke9qd9.cloudfront.net/#/planets";
+            var messages = new PlanetsPage(driver).GetLoginModalError();
+
+            Console.WriteLine(messages);
+        }
+
+        [TestMethod]
+        public void ExploreDialogMessageConfirmTextTest()
+        {
+            driver.Url = "https://d21vtxezke9qd9.cloudfront.net/#";
+            Console.WriteLine(new PlanetsPage(driver).ClickJupiterExploreButtonThenGetString());
+
+
+        }
+
+
 
         [TestCleanup]
         public void CleanUP()
